@@ -36,6 +36,11 @@ export class ItemService {
   }
 
   getItem(id: number): Item {
-    return this.items.filter((item) => item.id === id)[0];
+    return this.items.find((item) => item.id === id);
   }
+
+  serchItems(name: string): Array<Item> {
+    return this.items.filter((item) => item.name.toLowerCase().includes(name.toLowerCase()));
+  }
+
 }

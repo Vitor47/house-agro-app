@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, NO_ERRORS_SCHEMA, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 
 import { Item } from './item'
@@ -7,6 +7,9 @@ import { ItemService } from './item.service'
 @Component({
   selector: 'ns-details',
   templateUrl: './item-detail.component.html',
+  standalone: true,
+  imports: [],
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class ItemDetailComponent implements OnInit {
   item: Item
