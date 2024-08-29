@@ -1,0 +1,19 @@
+<ActionBar title="Sign In" class="action-bar"></ActionBar>
+
+<GridLayout [formGroup]="form" backgroundColor="#19336c" class="container" rows="*,auto,*">
+  <StackLayout row="1" class="form">
+    <label for="email">E-mail: </label>
+    <TextField id="email" type="email" formControlName="email" />
+    @if(email.invalid && email.touched) {
+    <Label style="color: red;">E-mail inválido</Label>
+    }
+
+    <label for="password">Senha: </label>
+    <TextField id="password" type="password" secure="true" formControlName="password" />
+    @if(password.invalid && password.touched) {
+    <Label style="color: red;">Senha inválida</Label>
+    }
+
+    <Button text="Login" (tap)="onLogin()" class="btn btn-primary"></Button>
+  </StackLayout>
+</GridLayout>

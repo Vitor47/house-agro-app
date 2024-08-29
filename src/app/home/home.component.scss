@@ -1,0 +1,37 @@
+.container{
+  background-color: #3b5998;
+  color: white;
+}
+
+.form {
+  width: 860px;
+}
+
+.action-bar {
+  background-color: #3b5998;
+  color: white;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.btn-primary {
+  background-color: #3b5998;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.error-label {
+  color: red;
+  font-size: 12px;
+}

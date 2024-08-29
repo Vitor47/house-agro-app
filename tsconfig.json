@@ -17,5 +17,10 @@
   },
   "include": ["src/tests/**/*.ts", "src/**/*.ios.ts", "src/**/*.android.ts"],
   "files": ["./src/main.ts", "./references.d.ts", "./src/polyfills.ts"],
-  "exclude": ["node_modules", "platforms", "e2e"]
+  "exclude": ["node_modules", "platforms", "e2e"],
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "strictDomLocalRefTypes": false,
+    "strictDomEventTypes": false,
+  }
 }

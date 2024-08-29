@@ -1,0 +1,44 @@
+.container{
+  background-color: #3b5998;
+  color: white;
+}
+
+.form {
+  padding: 22;
+}
+
+.action-bar {
+  background-color: #3b5998;
+  color: white;
+}
+
+img {
+  mix-blend-mode: multiply;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 5;
+}
+
+.input {
+  margin-bottom: 20;
+  padding: 10;
+  border: 1 solid #ccc;
+  border-radius: 5;
+}
+
+.btn-primary {
+  background-color: #3b5998;
+  color: white;
+  padding: 10;
+  border-radius: 5;
+  margin-top: 22;
+  border-radius: 12;
+  width: 50%;
+}
+
+.error-label {
+  color: red;
+  font-size: 12;
+}
