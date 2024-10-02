@@ -1,7 +1,7 @@
 {
   "name": "houseagro",
   "main": "./src/main.ts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "version": "npm run changelog && git add CHANGELOG.md"
