@@ -3,7 +3,8 @@
   "main": "./src/main.ts",
   "version": "1.0.0",
   "scripts": {
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "version": "npm run changelog && git add CHANGELOG.md"
   },
   "private": true,
   "dependencies": {
