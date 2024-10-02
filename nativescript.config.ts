@@ -1,7 +1,7 @@
 import { NativeScriptConfig } from '@nativescript/core';
 
 export default {
-  id: 'org.nativescript.houseagro',
+  id: 'com.houseagro',
   appPath: 'src',
   appResourcesPath: 'App_Resources',
   android: {

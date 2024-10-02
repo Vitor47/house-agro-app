@@ -1,13 +1,35 @@
-import { NgModule } from '@angular/core'
-import { Routes } from '@angular/router'
-import { NativeScriptRouterModule } from '@nativescript/angular'
+import { inject, NgModule } from "@angular/core";
+import { Routes } from "@angular/router";
+import {
+  NativeScriptRouterModule,
+  RouterExtensions,
+} from "@nativescript/angular";
 
-import { SignInComponent } from './signIn/signin.component'
+import { HomeComponent } from "./home/home.component";
+import { UserService } from "./services/user.service";
+import { SignInComponent } from "./signIn/signin.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/signin', pathMatch: 'full' },
-  { path: 'signin', component: SignInComponent },
-]
+  { path: "", redirectTo: "/signin", pathMatch: "full" },
+  {
+    path: "signin",
+    component: SignInComponent,
+    canActivate: [
+      () => {
+        const user = inject(UserService);
+        const router = inject(RouterExtensions);
+
+        if (user.isLogin()) {
+          router.navigate(["/home"], { clearHistory: true });
+          return false;
+        }
+
+        return true;
+      },
+    ],
+  },
+  { path: "home", component: HomeComponent },
+];
 
 @NgModule({
   imports: [NativeScriptRouterModule.forRoot(routes)],

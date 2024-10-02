@@ -3,8 +3,8 @@
 <GridLayout [formGroup]="form" backgroundColor="#19336c" class="container" rows="*,auto,*">
   <StackLayout row="1" class="form">
     <img src="~/assets/user_avatar_login.png" width="280" height="280" />
-    <label for="email">E-mail: </label>
-    <TextField id="email" type="email" formControlName="email" />
+    <label>E-mail: </label>
+    <TextField type="email" formControlName="email" />
     @if(email.invalid && email.touched) {
     <Label style="color: red;">E-mail inválido</Label>
     }
@@ -13,6 +13,10 @@
     <TextField id="password" type="password" secure="true" formControlName="password" />
     @if(password.invalid && password.touched) {
     <Label style="color: red;">Senha inválida</Label>
+    }
+
+    @if(isLogin()){
+    <ActivityIndicator busy="true"></ActivityIndicator>
     }
 
     <Button text="Login" (tap)="onLogin()" class="btn btn-primary"></Button>
