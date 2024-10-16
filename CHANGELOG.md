@@ -1,3 +1,12 @@
+## [0.0.3](https://github.com/Vitor47/house-agro-app/compare/v0.0.2...v0.0.3) (2024-10-16)
+
+
+### Features
+
+* add mapa com geolocalização atual ([d0d6d97](https://github.com/Vitor47/house-agro-app/commit/d0d6d97120b3c5337cbab2d2d637316e02e493a0))
+
+
+
 ## [0.0.2](https://github.com/Vitor47/house-agro-app/compare/v1.0.1...v0.0.2) (2024-10-02)
 
 
