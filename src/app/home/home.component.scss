@@ -4,7 +4,7 @@
 }
 
 .form {
-  width: 860px;
+  width: 860;
 }
 
 .action-bar {
@@ -14,24 +14,29 @@
 
 .label {
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 5;
+}
+
+.input-container {
+  padding: 10 40 10 10;
 }
 
 .input {
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 10;
+  border: 1 solid #ccc;
+  border-radius: 5;
+  color: black;
+  background-color: white;
 }
 
 .btn-primary {
   background-color: #3b5998;
   color: white;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 10;
+  border-radius: 5;
 }
 
 .error-label {
   color: red;
-  font-size: 12px;
+  font-size: 12;
 }

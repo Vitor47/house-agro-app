@@ -1,3 +1,9 @@
 <ActionBar title="Home" class="action-bar"></ActionBar>
-<MapView (ready)="onReady($event)">
-</MapView>
+<GridLayout rows="auto, *">
+    <MapView rowSpan="2" (ready)="onReady($event)" (mapReady)="onMapReady($event)" myLocationButtonEnabled="true"
+        myLocationTapped="myLocationTapped()" iosOverflowSafeArea="true">
+    </MapView>
+    <GridLayout class="input-container">
+        <TextField class="input" #searchBar hint="Pesquise aqui" (textChange)="onSearch($event.value)" row="0"></TextField>
+    </GridLayout>
+</GridLayout>
