@@ -7,14 +7,53 @@ import {
   NativeScriptRouterModule,
 } from "@nativescript/angular";
 import { CoreTypes, ImageSource } from "@nativescript/core";
+import { firebase } from "@nativescript/firebase-core";
 import * as geolocation from "@nativescript/geolocation";
 import {
   CameraUpdate,
   GoogleMap,
   MapReadyEvent,
   MapView,
+  Marker,
 } from "@nativescript/google-maps";
 import { GoogleMapsModule } from "@nativescript/google-maps/angular";
+import { Observable } from "rxjs";
+
+interface Cattle {
+  id: number;
+  name: string;
+  lat: number;
+  lng: number;
+}
+interface ChildEvent {
+  type: "added" | "changed";
+  data: Cattle;
+}
+
+const myObs = new Observable<ChildEvent>((subscriber) => {
+  const add = firebase()
+    .database()
+    .ref("/cattles")
+    .on("child_added", (data, previousKey) => {
+      subscriber.next({
+        type: "added",
+        data: data.val(),
+      });
+    });
+  const change = firebase()
+    .database()
+    .ref("/cattles")
+    .on("child_changed", (data, previousKey) => {
+      subscriber.next({
+        type: "changed",
+        data: data.val(),
+      });
+    });
+  return () => {
+    firebase().database().ref("/cattles").off("child_added", add);
+    firebase().database().ref("/cattles").off("child_changed", change);
+  };
+});
 
 @Component({
   selector: "ns-home",
@@ -34,9 +73,22 @@ export class HomeComponent {
   mapView: MapView;
   map: GoogleMap;
 
-  cattles = [];
+  cattles = new Map<number, { cattle: Cattle; marker?: Marker }>();
 
-  public onMapReady(event) {
+  constructor() {
+    myObs.subscribe((evt) => {
+      const existing = this.cattles.get(evt.data.id);
+      let cattleData = {
+        ...existing,
+        cattle: evt.data,
+        marker: this.updateMarker(evt.data, existing?.marker),
+      };
+
+      this.cattles.set(evt.data.id, cattleData);
+    });
+  }
+
+  async onMapReady(event) {
     const mapView = event.object;
     this.mapView = mapView;
   }
@@ -69,60 +121,48 @@ export class HomeComponent {
                 16
               )
             );
-
-            this.cattles = [
-              {
-                id: 1,
-                lat: currentLocation.latitude + 0.001,
-                lng: currentLocation.longitude + 0.001,
-              },
-              {
-                id: 2,
-                lat: currentLocation.latitude + 0.002,
-                lng: currentLocation.longitude - 0.001,
-              },
-              {
-                id: 3,
-                lat: currentLocation.latitude - 0.001,
-                lng: currentLocation.longitude + 0.002,
-              },
-              {
-                id: 4,
-                lat: currentLocation.latitude - 0.002,
-                lng: currentLocation.longitude - 0.002,
-              },
-              {
-                id: 5,
-                lat: currentLocation.latitude + 0.0015,
-                lng: currentLocation.longitude - 0.0015,
-              },
-            ];
-
-            let cattleIcon = ImageSource.fromFileSync("~/assets/cattle.webp");
-            cattleIcon = cattleIcon.resize(100);
-
-            this.cattles.forEach((cattle) => {
-              map.addMarker({
-                position: {
-                  lat: cattle.lat,
-                  lng: cattle.lng,
-                },
-                title: `Cattle ${cattle.id}`,
-                snippet: `Lat: ${cattle.lat}, Lng: ${cattle.lng}`,
-                icon: cattleIcon,
+            for (const [key, value] of this.cattles.entries()) {
+              this.cattles.set(key, {
+                ...value,
+                marker: this.updateMarker(value.cattle),
               });
-            });
+            }
           });
       });
     }
+  }
+  cattleIcon = ImageSource.fromFileSync("~/assets/cattle.webp").resize(100);
+
+  updateMarker(cattle: Cattle, existingMarker?: Marker) {
+    if (existingMarker) {
+      existingMarker.position = {
+        lat: cattle.lat,
+        lng: cattle.lng,
+      };
+      return existingMarker;
+    }
+    if (!this.map) {
+      return null;
+    }
+    return this.map.addMarker({
+      position: {
+        lat: cattle.lat,
+        lng: cattle.lng,
+      },
+      title: `${cattle.name}`,
+      snippet: `Lat: ${cattle.lat}, Lng: ${cattle.lng}`,
+      icon: this.cattleIcon,
+    });
   }
 
   async onSearch(query: string) {
     if (query) {
       if (query) {
-        const cattleFound = this.cattles.filter((cattle) =>
-          `Cattle ${cattle.id}`.toLowerCase().includes(query.toLowerCase())
-        );
+        const cattleFound = Array.from(this.cattles.values())
+          .map((data) => data.cattle)
+          .filter((cattle) =>
+            cattle.name.toLowerCase().includes(query.toLowerCase())
+          );
 
         if (cattleFound.length) {
           this.map.animateCamera(
