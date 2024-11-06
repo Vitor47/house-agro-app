@@ -22,6 +22,8 @@ import { Observable } from "rxjs";
 interface Cattle {
   id: number;
   name: string;
+  tag?: string;
+  description?: string;
   lat: number;
   lng: number;
 }
