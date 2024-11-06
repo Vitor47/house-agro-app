@@ -1,3 +1,13 @@
+## [0.0.4](https://github.com/Vitor47/house-agro-app/compare/v0.0.3...v0.0.4) (2024-11-06)
+
+
+### Features
+
+* add animais fake no mapa ([231ed1f](https://github.com/Vitor47/house-agro-app/commit/231ed1f72ba4a78c75c1b30155f1dd54270b2df5))
+* listar animais no mapa de acordo com os dados do firebase ([de5e536](https://github.com/Vitor47/house-agro-app/commit/de5e536676b8055ace52f55f1d5f4a772c984936))
+
+
+
 ## [0.0.3](https://github.com/Vitor47/house-agro-app/compare/v0.0.2...v0.0.3) (2024-10-16)
 
 
