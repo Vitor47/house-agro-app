@@ -41,11 +41,11 @@ export class SignInComponent {
   private user = inject(UserService);
 
   get email() {
-    return this.form.get("email");
+    return this.form.get("email")!;
   }
 
   get password() {
-    return this.form.get("password");
+    return this.form.get("password")!;
   }
 
   isLogin = signal(false);
@@ -56,7 +56,7 @@ export class SignInComponent {
       this.isLogin.set(true);
 
       try {
-        await this.user.Login(this.email.value, this.password.value);
+        await this.user.Login(this.email.value!, this.password.value!);
 
         this.router.navigate(["/home"], { clearHistory: true });
       } catch (error) {

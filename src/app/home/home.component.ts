@@ -21,7 +21,7 @@ import { Observable } from "rxjs";
 
 interface Cattle {
   id: number;
-  name: string;
+  name?: string;
   tag?: string;
   description?: string;
   lat: number;
@@ -72,10 +72,11 @@ const myObs = new Observable<ChildEvent>((subscriber) => {
   schemas: [NO_ERRORS_SCHEMA],
 })
 export class HomeComponent {
-  mapView: MapView;
-  map: GoogleMap;
+  mapView!: MapView;
+  map!: GoogleMap;
+  isNotFound: boolean = false;
 
-  cattles = new Map<number, { cattle: Cattle; marker?: Marker }>();
+  cattles = new Map<number, { cattle: Cattle; marker?: Marker | null }>();
 
   constructor() {
     myObs.subscribe((evt) => {
@@ -90,9 +91,9 @@ export class HomeComponent {
     });
   }
 
-  async onMapReady(event) {
+  async onMapReady(event: MapReadyEvent) {
     const mapView = event.object;
-    this.mapView = mapView;
+    this.mapView = mapView as unknown as MapView;
   }
 
   async onReady(event: MapReadyEvent) {
@@ -135,7 +136,7 @@ export class HomeComponent {
   }
   cattleIcon = ImageSource.fromFileSync("~/assets/cattle.webp").resize(100);
 
-  updateMarker(cattle: Cattle, existingMarker?: Marker) {
+  updateMarker(cattle: Cattle, existingMarker?: Marker | null) {
     if (existingMarker) {
       existingMarker.position = {
         lat: cattle.lat,
@@ -151,35 +152,40 @@ export class HomeComponent {
         lat: cattle.lat,
         lng: cattle.lng,
       },
-      title: `${cattle.name}`,
-      snippet: `Lat: ${cattle.lat}, Lng: ${cattle.lng}`,
+      title: `${cattle?.name || cattle?.tag}`,
+      snippet: `${cattle.description || "Sem descrição"}`,
       icon: this.cattleIcon,
     });
   }
 
   async onSearch(query: string) {
-    if (query) {
-      if (query) {
-        const cattleFound = Array.from(this.cattles.values())
-          .map((data) => data.cattle)
-          .filter((cattle) =>
-            cattle.name.toLowerCase().includes(query.toLowerCase())
-          );
-
-        if (cattleFound.length) {
-          this.map.animateCamera(
-            CameraUpdate.fromCoordinates(
-              cattleFound.map((cattle) => ({
-                lat: cattle.lat,
-                lng: cattle.lng,
-              })),
-              16
-            )
-          );
-        } else {
-          console.log("Cattle não encontrado!");
-        }
-      }
+    if (!query) {
+      this.isNotFound = false;
+      return;
     }
+
+    const cattleFound = Array.from(this.cattles.values())
+      .map((data) => data.cattle)
+      .filter((cattle) =>
+        [cattle.name?.toLowerCase(), cattle.tag?.toLowerCase()].some((v) =>
+          v?.includes(query.toLowerCase())
+        )
+      );
+
+    if (!cattleFound.length) {
+      this.isNotFound = true;
+      return;
+    }
+
+    this.isNotFound = false;
+    this.map.animateCamera(
+      CameraUpdate.fromCoordinates(
+        cattleFound.map((cattle) => ({
+          lat: cattle.lat,
+          lng: cattle.lng,
+        })),
+        16
+      )
+    );
   }
 }

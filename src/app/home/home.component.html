@@ -4,6 +4,11 @@
         myLocationTapped="myLocationTapped()" iosOverflowSafeArea="true">
     </MapView>
     <GridLayout class="input-container">
-        <TextField class="input" #searchBar hint="Pesquise aqui" (textChange)="onSearch($event.value)" row="0"></TextField>
+        <TextField class="input" #searchBar hint="Pesquise aqui" (textChange)="onSearch($event.value)" row="0">
+        </TextField>
     </GridLayout>
+    @if(isNotFound){
+    <Label class="not-found-message" row="1" horizontalAlignment="center" verticalAlignment="middle">Gado não
+        encontrado!</Label>
+    }
 </GridLayout>
